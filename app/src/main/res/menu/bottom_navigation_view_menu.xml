@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_navigation_item_planner"
+        android:icon="@drawable/calendar"
+        android:title="@string/nav_planner_title" />
+
+    <item
+        android:id="@+id/bottom_navigation_item_groceries"
+        android:icon="@drawable/trolley"
+        android:title="@string/nav_groceries_title" />
+
+    <item
+        android:id="@+id/bottom_navigation_item_meals"
+        android:icon="@drawable/iconlist"
+        android:title="@string/nav_meals_title"/>
+
+</menu>

@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Fuckeverything</string>
+    <string name="nav_planner_title">Planner</string>
+    <string name="nav_groceries_title">Groceries</string>
+    <string name="nav_meals_title">Meals</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+    <string name="planner_title">Weekly Meal Planner</string>
+    <string name="add_button_title">Add a Meal</string>
+    <string name="clear_button_title">Clear Meals</string>
+    <string name="meal_title">Meals</string>
+    <string name="previous_meals">Previous Meals</string>
+    <string name="suggested_meals">Suggested Meals</string>
+</resources>
