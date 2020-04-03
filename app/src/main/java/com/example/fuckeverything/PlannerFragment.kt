@@ -77,6 +77,7 @@ class PlannerFragment : Fragment() {
                     DialogInterface.OnClickListener { _, _ ->
                         val textString = taskEditText.text.toString()
                         updateList(index, textString)
+                        createItemsDialog()
 
                     })
                 .setNegativeButton("Cancel", null)
@@ -84,8 +85,19 @@ class PlannerFragment : Fragment() {
                 .create()
                 .show()
         }
-
     }
+
+    fun createItemsDialog() {
+        val builder = context?.let { AlertDialog.Builder(it) }
+        if (builder != null) {
+            builder.setTitle("Add items now?")
+                .setPositiveButton("OK", null)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show()
+        }
+    }
+
 
     fun clearMeals() {
         for (meal_lists in mealListArrays) {
