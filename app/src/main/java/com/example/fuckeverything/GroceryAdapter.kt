@@ -1,6 +1,7 @@
 package com.example.homepagea
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -24,18 +25,25 @@ class GroceryAdapter (val context: Context,
         view.setOnClickListener {
             clickListener(grocery_list[holder.adapterPosition])
         }
-
         return holder
     }
 
     override fun onBindViewHolder(holder: GroceryViewHolder, i: Int) {
+        Log.d("Bind", "${grocery_list[i].start}")
         holder.text.text = grocery_list[i].name
         when(grocery_list[i].type) {
-            "Produce" -> holder.image.setImageResource(R.drawable.trolley)
-            "Canned" -> holder.image.setImageResource(R.drawable.trolley)
-            "Meat" -> holder.image.setImageResource(R.drawable.trolley)
-            "Dairy" -> holder.image.setImageResource(R.drawable.trolley)
-            "Frozen" -> holder.image.setImageResource(R.drawable.trolley)
+            "Produce" -> holder.image.setImageResource(R.drawable.produce)
+            "Canned" -> holder.image.setImageResource(R.drawable.can)
+            "Meat" -> holder.image.setImageResource(R.drawable.meat)
+            "Dairy" -> holder.image.setImageResource(R.drawable.dairy)
+            "Frozen" -> holder.image.setImageResource(R.drawable.frozen)
+        }
+        if (grocery_list[i].start) {
+            holder.headerTitle.text = grocery_list[i].type
+            holder.headerTitle.textSize = 18F
+        } else {
+            holder.headerTitle.text = ""
+            holder.headerTitle.textSize = 0F
         }
     }
 

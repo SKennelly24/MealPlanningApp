@@ -8,4 +8,5 @@ import androidx.recyclerview.widget.RecyclerView
 class GroceryViewHolder (view : View) : RecyclerView.ViewHolder(view){
     val text: TextView = view.findViewById(R.id.title)
     val image: ImageView = view.findViewById(R.id.type_image)
+    val headerTitle: TextView = view.findViewById(R.id.header)
 }
