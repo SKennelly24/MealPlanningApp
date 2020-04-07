@@ -77,7 +77,7 @@ class PlannerFragment : Fragment() {
                     DialogInterface.OnClickListener { _, _ ->
                         val textString = taskEditText.text.toString()
                         updateList(index, textString)
-                        createItemsDialog()
+                        //createItemsDialog()
 
                     })
                 .setNegativeButton("Cancel", null)

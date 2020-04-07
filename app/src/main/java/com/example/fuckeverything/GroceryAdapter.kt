@@ -15,6 +15,8 @@ class GroceryAdapter (val context: Context,
                    val grocery_list: List<GroceryItem>,
                    val clickListener: (GroceryItem) -> Unit): RecyclerView.Adapter<GroceryViewHolder>()
 {
+    var checkedItems : ArrayList<GroceryItem> = arrayListOf()
+
     override fun getItemCount(): Int = grocery_list.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroceryViewHolder {
@@ -45,6 +47,17 @@ class GroceryAdapter (val context: Context,
             holder.headerTitle.text = ""
             holder.headerTitle.textSize = 0F
         }
+        holder.checkBox.setOnClickListener{
+            Log.d("Checked", grocery_list[i].name)
+            if (holder.checkBox.isChecked) {
+                checkedItems.add(grocery_list[i])
+                grocery_list[i].checked = true
+            } else {
+                checkedItems.remove(grocery_list[i])
+                grocery_list[i].checked = false
+            }
+        }
+        holder.checkBox.isChecked = grocery_list[i].checked
     }
 
 }

@@ -36,7 +36,7 @@ class GroceriesFragment : Fragment() {
     private var index  = -1
     private var item_list = arrayListOf<String>()
     private var grocery_item_list = arrayListOf<GroceryItem>()
-
+    private lateinit var adapter : GroceryAdapter
     private lateinit var groceryPicker: RecyclerView
 
     private var grocery_list: ArrayList<GroceryItem> = arrayListOf()
@@ -59,9 +59,14 @@ class GroceriesFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_groceries, container, false)
         val addButton: Button = view.findViewById(R.id.add_button)
         val clearButton : Button = view.findViewById(R.id.clear_button)
+        val buyButton : Button = view.findViewById(R.id.buy_button)
 
         addButton.setOnClickListener {
             createItemAddDialog()
+        }
+
+        buyButton.setOnClickListener {
+            createBuyItemsDialog()
         }
 
         clearButton.setOnClickListener {
@@ -77,14 +82,54 @@ class GroceriesFragment : Fragment() {
 
         val decoration = DividerItemDecoration(context, layoutManager.orientation)
         groceryPicker.addItemDecoration(decoration)
-        val adapter = context?.let {
+        adapter = context?.let {
             GroceryAdapter(it, grocery_list) {
                 createDeleteDialog(it)
             }
-        }
+        }!!
         groceryPicker.adapter = adapter
 
         return view
+    }
+
+    fun buyItems() {
+        val checked_items = adapter?.checkedItems
+        Log.d("Checked Items", checked_items.toString())
+        if (checked_items != null) {
+            for (item in checked_items) {
+                grocery_list.remove(item)
+            }
+            ends = arrayOf(-1,-1,-1,-1,-1)
+            var product_index = 0
+            for (x in grocery_list.indices) {
+                grocery_list[x].checked = false
+                when(grocery_list[x].type) {
+                    "Produce" -> product_index = PRODUCE_INDEX
+                    "Canned" -> product_index = CANNED_INDEX
+                    "Meat" -> product_index = MEAT_INDEX
+                    "Dairy" -> product_index = DAIRY_INDEX
+                    "Frozen" -> product_index = FROZEN_INDEX
+                }
+                if (ends[product_index] == -1) {
+                    grocery_list[x].start = true
+                    ends[product_index] = x + 1
+                } else {
+                    grocery_list[x].start = false
+                    ends[product_index] += 1
+                }
+            }
+            adapter.checkedItems.clear()
+            groceryPicker.adapter?.notifyDataSetChanged()
+        }
+    }
+
+    fun createBuyItemsDialog() {
+        Log.d("Buying", "items")
+        val builder = context?.let { AlertDialog.Builder(it) }
+        builder?.setTitle("Buy Items?")?.setPositiveButton("OK",
+            DialogInterface.OnClickListener { _, _ ->
+                buyItems()
+            })?.setNegativeButton("Cancel", null)?.create()?.show()
     }
 
     fun removeGroceryItem(item: GroceryItem) {
@@ -152,7 +197,11 @@ class GroceriesFragment : Fragment() {
                     start = true
                 } else {
                     currentIndex = ends[x]
+                    ends[x] = ends[x] + 1
                 }
+            }
+            else if (ends[x] > item_index) {
+                ends[x] += 1
             }
             Log.d("$x", ends[x].toString())
         }
@@ -160,7 +209,7 @@ class GroceriesFragment : Fragment() {
         Log.d("Item", textString)
         Log.d("Start", start.toString())
         Log.d("Type", item_index.toString())
-        grocery_list.add(currentIndex, GroceryItem(textString, item_types[index], start))
+        grocery_list.add(currentIndex, GroceryItem(textString, item_types[index], start, false))
         groceryPicker.adapter?.notifyItemRangeChanged(currentIndex, grocery_list.size - currentIndex)
         Log.d("all items", grocery_list.toString())
     }
@@ -206,7 +255,7 @@ class GroceriesFragment : Fragment() {
                 val grocery = reader.nextString()
                 val type = reader.nextString()
                 val start = reader.nextBoolean()
-                grocery_list.add(GroceryItem(grocery, type, start))
+                grocery_list.add(GroceryItem(grocery, type, start, false))
                 when(type) {
                     "Produce" -> ends[PRODUCE_INDEX] = count
                     "Canned" -> ends[CANNED_INDEX] = count
