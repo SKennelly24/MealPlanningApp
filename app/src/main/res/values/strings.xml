@@ -16,4 +16,11 @@
     <string name="meal_title">Meals</string>
     <string name="previous_meals">Previous Meals</string>
     <string name="suggested_meals">Suggested Meals</string>
+    <string name="grocery_add_button">Add an Item</string>
+    <string name="grocery_clear_button">Clear List</string>
+    <string name="grocery_buy_button">Buy Items</string>
+    <string name="meals_clear_button">Buy Items</string>
+    <string name="grocery_item_header">Header</string>
+    <string name="grocery_item_image_des">Image representing item type</string>
+    <string name="meal_item_image_des">Image of the meal</string>
 </resources>

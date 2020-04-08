@@ -1,9 +1,6 @@
 package com.example.fuckeverything
 
 import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.JsonReader
 import android.util.JsonWriter
@@ -19,38 +16,52 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homepagea.GroceryAdapter
-import com.example.homepagea.Meal
-import com.example.homepagea.MealAdapter
-import java.io.FileNotFoundException
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
+import java.io.*
 
+//Indexes for the varities of items
 const val PRODUCE_INDEX = 0
 const val CANNED_INDEX = 1
 const val MEAT_INDEX = 2
 const val DAIRY_INDEX = 3
 const val FROZEN_INDEX = 4
 
+/**
+* Groceries fragment which shows the grocery list
+* - Writes all the items to a JSON file so includes data persistence
+* - Implements a recycler view
+* - Can add items and they move into the correct place depending on type
+* - Can "buy" items and the list will be resorted
+* TO DO
+* - Add ability to if there is multiple of the same thing to have the amount next to it
+* - Add ability to add items to particular meals
+ */
 class GroceriesFragment : Fragment() {
-    private val item_types = arrayOf("Produce", "Canned", "Meat", "Dairy", "Frozen")
+    private val itemTypes = arrayOf("Produce", "Canned", "Meat", "Dairy", "Frozen")
     private var index  = -1
-    private var item_list = arrayListOf<String>()
-    private var grocery_item_list = arrayListOf<GroceryItem>()
     private lateinit var adapter : GroceryAdapter
     private lateinit var groceryPicker: RecyclerView
-
-    private var grocery_list: ArrayList<GroceryItem> = arrayListOf()
+    private var groceryList: ArrayList<GroceryItem> = arrayListOf()
     private var ends = arrayOf(-1,-1,-1,-1,-1)
 
+    /**
+    * Reads the grocery items from the JSON file
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         readGroceriesfromJson()
     }
+
+    /**
+    * Write the grocery items to the JSON file
+     */
     override fun onStop() {
         super.onStop()
         writeGroceriestoJson()
     }
 
+    /**
+    * Connects the fragment groceries layout and sets up the buttons and recycler view
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,6 +71,7 @@ class GroceriesFragment : Fragment() {
         val addButton: Button = view.findViewById(R.id.add_button)
         val clearButton : Button = view.findViewById(R.id.clear_button)
         val buyButton : Button = view.findViewById(R.id.buy_button)
+        groceryPicker = view.findViewById(R.id.items_recycler)
 
         addButton.setOnClickListener {
             createItemAddDialog()
@@ -70,130 +82,152 @@ class GroceriesFragment : Fragment() {
         }
 
         clearButton.setOnClickListener {
-            val initial_size = grocery_list.size
-            grocery_list.clear()
+            groceryList.clear()
             ends = arrayOf(-1,-1,-1,-1,-1)
             groceryPicker.adapter?.notifyDataSetChanged()
         }
 
-        groceryPicker = view.findViewById(R.id.items_recycler)
+        initRecyclerView()
+        return view
+    }
+
+    /**
+    * Initialises the recycler view by connecting its adapter
+     */
+    private fun initRecyclerView() {
         val layoutManager = LinearLayoutManager(context)
         groceryPicker.layoutManager = layoutManager
 
+        //Adding a divider decoration
         val decoration = DividerItemDecoration(context, layoutManager.orientation)
         groceryPicker.addItemDecoration(decoration)
-        adapter = context?.let {
-            GroceryAdapter(it, grocery_list) {
+
+        //Connect adapter to the recycler view
+        adapter = context?.let { context ->
+            GroceryAdapter(context, groceryList) {
                 createDeleteDialog(it)
             }
         }!!
         groceryPicker.adapter = adapter
-
-        return view
     }
 
-    fun buyItems() {
-        val checked_items = adapter?.checkedItems
-        Log.d("Checked Items", checked_items.toString())
-        if (checked_items != null) {
-            for (item in checked_items) {
-                grocery_list.remove(item)
-            }
-            ends = arrayOf(-1,-1,-1,-1,-1)
-            var product_index = 0
-            for (x in grocery_list.indices) {
-                grocery_list[x].checked = false
-                when(grocery_list[x].type) {
-                    "Produce" -> product_index = PRODUCE_INDEX
-                    "Canned" -> product_index = CANNED_INDEX
-                    "Meat" -> product_index = MEAT_INDEX
-                    "Dairy" -> product_index = DAIRY_INDEX
-                    "Frozen" -> product_index = FROZEN_INDEX
-                }
-                if (ends[product_index] == -1) {
-                    grocery_list[x].start = true
-                    ends[product_index] = x + 1
-                } else {
-                    grocery_list[x].start = false
-                    ends[product_index] += 1
-                }
-            }
-            adapter.checkedItems.clear()
-            groceryPicker.adapter?.notifyDataSetChanged()
+    /**
+    * Finds the product index given the string name
+     */
+    private fun findProductIndex(itemType : String) : Int {
+        var productIndex = -1
+        when(itemType) {
+            "Produce" -> productIndex = PRODUCE_INDEX
+            "Canned" -> productIndex = CANNED_INDEX
+            "Meat" -> productIndex = MEAT_INDEX
+            "Dairy" -> productIndex = DAIRY_INDEX
+            "Frozen" -> productIndex = FROZEN_INDEX
         }
+        return productIndex
     }
 
-    fun createBuyItemsDialog() {
-        Log.d("Buying", "items")
-        val builder = context?.let { AlertDialog.Builder(it) }
-        builder?.setTitle("Buy Items?")?.setPositiveButton("OK",
-            DialogInterface.OnClickListener { _, _ ->
-                buyItems()
-            })?.setNegativeButton("Cancel", null)?.create()?.show()
-    }
+    /**
+    * "Buys" the items checked by taking them out of the list
+    * and updating the list
+     */
+    private fun buyItems() {
+        val checkedItems = adapter.checkedItems
+        Log.d("Checked Items", checkedItems.toString())
 
-    fun removeGroceryItem(item: GroceryItem) {
-        Log.d("Delete", "${item.name}")
-        grocery_list.remove(item)
-        Log.d("Removed", "${item.name}")
+        //Removes items from the grocery list
+        for (item in checkedItems) {
+            groceryList.remove(item)
+        }
 
-        var starts = arrayOf(false, false, false, false, false)
+        //Resets the ends array, goes through new list and updates
+        //if this the first of the item type and where next item should go in the ends array
         ends = arrayOf(-1,-1,-1,-1,-1)
-        for (x in grocery_list.indices) {
-            var product_index = 0
-            when(grocery_list[x].type) {
-                "Produce" -> product_index = PRODUCE_INDEX
-                "Canned" -> product_index = CANNED_INDEX
-                "Meat" -> product_index = MEAT_INDEX
-                "Dairy" -> product_index = DAIRY_INDEX
-                "Frozen" -> product_index = FROZEN_INDEX
-            }
-            if (starts[product_index]){
-                grocery_list[x].start = false
+        for (x in groceryList.indices) {
+            groceryList[x].checked = false
+            val productIndex = findProductIndex(groceryList[x].type)
+
+            if (ends[productIndex] == -1) {
+                groceryList[x].start = true
+                ends[productIndex] = x + 1
             } else {
-                starts[product_index] = true
-                grocery_list[x].start = true
+                groceryList[x].start = false
+                ends[productIndex] += 1
             }
-            ends[product_index] = x + 1
         }
-        for (x in ends.indices) {
-            Log.d("$x", ends[x].toString())
+        //Clears the checked items variable and notifies of the data set change
+        adapter.checkedItems.clear()
+        groceryPicker.adapter?.notifyDataSetChanged()
+    }
+
+    /**
+    * Creates the buy items dialog
+     */
+    private fun createBuyItemsDialog() {
+        val builder = context?.let { AlertDialog.Builder(it) }
+        builder?.setTitle("Buy Items?")?.setPositiveButton("OK"
+        ) { _, _ ->
+            buyItems()
+        }?.setNegativeButton("Cancel", null)?.create()?.show()
+    }
+    /**
+    * Removes the grocery item from the list and updates it
+     */
+    private fun removeGroceryItem(item: GroceryItem) {
+        Log.d("Delete", item.name)
+        groceryList.remove(item)
+
+        //Checks if the item type is the same as the item removed and updates whether it is the
+        // first or not and the ends array
+        val starts = arrayOf(false, false, false, false, false)
+        ends = arrayOf(-1,-1,-1,-1,-1)
+        for (x in groceryList.indices) {
+            val productIndex = findProductIndex(groceryList[x].type)
+            if (starts[productIndex]){
+                groceryList[x].start = false
+            } else {
+                starts[productIndex] = true
+                groceryList[x].start = true
+            }
+            ends[productIndex] = x + 1
         }
         groceryPicker.adapter?.notifyDataSetChanged()
-        Log.d("all items", grocery_list.toString())
     }
 
-
-    fun createDeleteDialog(item: GroceryItem) {
+    /**
+    * Creates a dialog to delete an item
+     */
+    private fun createDeleteDialog(item: GroceryItem) {
         val builder = context?.let { AlertDialog.Builder(it) }
-        builder?.setTitle("Delete Item?")?.setPositiveButton("OK",
-            DialogInterface.OnClickListener { _, _ ->
-                removeGroceryItem(item)
-            })?.setNegativeButton("Cancel", null)?.create()?.show()
+        builder?.setTitle("Delete Item?")?.setPositiveButton("OK"
+        ) { _, _ ->
+            removeGroceryItem(item)
+        }?.setNegativeButton("Cancel", null)?.create()?.show()
 
     }
-
-    fun createItemAddDialog() {
+    /**
+    * Creates a dialog to add an item to the list
+     */
+    private fun createItemAddDialog() {
         val taskEditText = EditText(context)
         val builder = context?.let { AlertDialog.Builder(it) }
-        builder?.setTitle("Add an item?")?.setSingleChoiceItems(item_types, -1,
-            DialogInterface.OnClickListener { _, i ->
-                index = i
-            })?.setPositiveButton("OK",
-            DialogInterface.OnClickListener { _, _ ->
-                val textString = taskEditText.text.toString()
-                addGroceryItem(textString, index)
-            })?.setNegativeButton("Cancel", null)?.setView(taskEditText)?.create()?.show()
+        builder?.setTitle("Add an item?")?.setSingleChoiceItems(itemTypes, -1
+        ) { _, i ->
+            index = i
+        }?.setPositiveButton("OK"
+        ) { _, _ ->
+            val textString = taskEditText.text.toString()
+            addGroceryItem(textString, index)
+        }?.setNegativeButton("Cancel", null)?.setView(taskEditText)?.create()?.show()
     }
 
 
-    fun addGroceryItem(textString : String, item_index: Int) {
-        var currentIndex = grocery_list.size
+    private fun addGroceryItem(textString : String, item_index: Int) {
+        var currentIndex = groceryList.size
         var start = false
         for (x in ends.indices) {
             if (x == item_index) {
                 if (ends[x] == -1) {
-                    ends[x] = grocery_list.size + 1
+                    ends[x] = groceryList.size + 1
                     start = true
                 } else {
                     currentIndex = ends[x]
@@ -209,21 +243,24 @@ class GroceriesFragment : Fragment() {
         Log.d("Item", textString)
         Log.d("Start", start.toString())
         Log.d("Type", item_index.toString())
-        grocery_list.add(currentIndex, GroceryItem(textString, item_types[index], start, false))
-        groceryPicker.adapter?.notifyItemRangeChanged(currentIndex, grocery_list.size - currentIndex)
-        Log.d("all items", grocery_list.toString())
+        groceryList.add(currentIndex, GroceryItem(textString, itemTypes[index], start, false))
+        groceryPicker.adapter?.notifyItemRangeChanged(currentIndex, groceryList.size - currentIndex)
+        Log.d("all items", groceryList.toString())
     }
 
-    fun writeGroceriestoJson() {
+    /**
+    * Writes the grocery items to JSON
+     */
+    private fun writeGroceriestoJson() {
         val file = context?.openFileOutput("groceries.json", Context.MODE_PRIVATE)
-        val writer = JsonWriter(OutputStreamWriter(file))
+        val writer = JsonWriter(OutputStreamWriter(file as OutputStream))
         writer.setIndent("  ")
         Log.d("Writer", "Starting Writing")
 
         writer.beginObject()
         writer.name("Groceries")
         writer.beginArray()
-        for (item in grocery_list) {
+        for (item in groceryList) {
             writer.beginArray()
             Log.d("meal", item.name)
             writer.value(item.name)
@@ -239,13 +276,16 @@ class GroceriesFragment : Fragment() {
         writer.close()
     }
 
-    fun readGroceriesfromJson() {
+    /**
+    * Reads the groceries from the JSON file and adds them into the grocery list appropriately
+     */
+    private fun readGroceriesfromJson() {
         try {
             val file = context?.openFileInput("groceries.json")
-            val reader = JsonReader(InputStreamReader(file))
+            val reader = JsonReader(InputStreamReader(file as InputStream))
             Log.d("item", "reader open")
             reader.beginObject()
-            Log.d("name", "${reader.nextName()}")
+            Log.d("name", reader.nextName())
             var count = 0
             reader.beginArray()
             Log.d("item", "array started")
@@ -255,7 +295,7 @@ class GroceriesFragment : Fragment() {
                 val grocery = reader.nextString()
                 val type = reader.nextString()
                 val start = reader.nextBoolean()
-                grocery_list.add(GroceryItem(grocery, type, start, false))
+                groceryList.add(GroceryItem(grocery, type, start, false))
                 when(type) {
                     "Produce" -> ends[PRODUCE_INDEX] = count
                     "Canned" -> ends[CANNED_INDEX] = count

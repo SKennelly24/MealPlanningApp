@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,7 +10,7 @@
         android:layout_width="323dp"
         android:layout_height="56dp"
         android:layout_marginBottom="80dp"
-        android:text="Add an item"
+        android:text="@string/grocery_add_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -46,7 +45,7 @@
         android:id="@+id/clear_button"
         android:layout_width="140dp"
         android:layout_height="43dp"
-        android:text="Clear list"
+        android:text="@string/grocery_clear_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.162"
@@ -58,7 +57,7 @@
         android:id="@+id/buy_button"
         android:layout_width="140dp"
         android:layout_height="43dp"
-        android:text="Buy Items"
+        android:text="@string/grocery_buy_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.837"

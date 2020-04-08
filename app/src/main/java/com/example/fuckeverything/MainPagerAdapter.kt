@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 
-class MainPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+class MainPagerAdapter(fm: FragmentManager) :FragmentStatePagerAdapter(fm) {
 
     private val screens = arrayListOf<MainScreen>()
 

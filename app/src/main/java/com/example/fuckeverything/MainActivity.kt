@@ -11,14 +11,15 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private lateinit var viewPager: ViewPager
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var mainPagerAdapter: MainPagerAdapter
+    var newMeals: ArrayList<String> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         // Initialize components/views.
-        viewPager = findViewById(R.id.view_pager);
-        bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        viewPager = findViewById(R.id.view_pager)
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view)
         mainPagerAdapter = MainPagerAdapter(supportFragmentManager)
 
         // Set items to be displayed.

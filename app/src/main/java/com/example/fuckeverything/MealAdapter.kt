@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fuckeverything.MealViewHolder
 import com.example.fuckeverything.R
 import com.squareup.picasso.Picasso
-
+/**
+ * Implements the adapter needed for the meal recycler view
+ */
 class MealAdapter (val context: Context,
                        val meal_list: List<Meal>,
                    val clickListener: (Meal) -> Unit): RecyclerView.Adapter<MealViewHolder>()
@@ -25,7 +27,9 @@ class MealAdapter (val context: Context,
 
         return holder
     }
-
+    /**
+    * Updates the text and the image for the particular item
+     */
     override fun onBindViewHolder(holder: MealViewHolder, i: Int) {
         holder.mealText.text = meal_list[i].text
         Picasso.get().load(meal_list[i].image_url).into(holder.mealImage)

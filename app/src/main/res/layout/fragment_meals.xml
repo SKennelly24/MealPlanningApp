@@ -22,18 +22,20 @@
 
     <ListView
         android:id="@+id/meals_listview"
-        android:layout_width="411dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
         android:layout_marginTop="35dp"
-        android:layout_marginEnd="7dp"
-        android:layout_marginBottom="7dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="55dp"
         app:layout_constraintBottom_toTopOf="@+id/divider3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.485"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintTop_toBottomOf="@+id/textView15"
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mealPicker"
@@ -53,13 +55,14 @@
         android:layout_width="100dp"
         android:layout_height="27dp"
         android:layout_marginStart="7dp"
+        android:layout_marginLeft="7dp"
         android:layout_marginTop="7dp"
         android:layout_marginBottom="7dp"
         android:text="@string/previous_meals"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/meals_listview"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintHorizontal_bias="0.049"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
@@ -68,6 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
+        android:layout_marginLeft="7dp"
         android:layout_marginTop="7dp"
         android:layout_marginBottom="7dp"
         android:text="@string/suggested_meals"
@@ -90,7 +94,21 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15"
-        app:layout_constraintVertical_bias="0.412" />
+        app:layout_constraintVertical_bias="0.465" />
+
+    <Button
+        android:id="@+id/clear_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="7dp"
+        android:text="@string/meals_clear_button"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/divider3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/meals_listview" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

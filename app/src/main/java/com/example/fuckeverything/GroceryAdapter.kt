@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fuckeverything.GroceryItem
 import com.example.fuckeverything.GroceryViewHolder
-import com.example.fuckeverything.MealViewHolder
 import com.example.fuckeverything.R
-import com.squareup.picasso.Picasso
 
+/**
+* Adapter to use with the grocery list recycler view
+ */
 class GroceryAdapter (val context: Context,
-                   val grocery_list: List<GroceryItem>,
-                   val clickListener: (GroceryItem) -> Unit): RecyclerView.Adapter<GroceryViewHolder>()
+                      private val grocery_list: List<GroceryItem>,
+                      val clickListener: (GroceryItem) -> Unit): RecyclerView.Adapter<GroceryViewHolder>()
 {
     var checkedItems : ArrayList<GroceryItem> = arrayListOf()
 
@@ -30,9 +31,15 @@ class GroceryAdapter (val context: Context,
         return holder
     }
 
+    /**
+    * Sets the name, image depending on type, header if it is the first of that type
+    * and what to do when a check box is ticked
+     */
     override fun onBindViewHolder(holder: GroceryViewHolder, i: Int) {
         Log.d("Bind", "${grocery_list[i].start}")
         holder.text.text = grocery_list[i].name
+
+        //Add the appropriate image
         when(grocery_list[i].type) {
             "Produce" -> holder.image.setImageResource(R.drawable.produce)
             "Canned" -> holder.image.setImageResource(R.drawable.can)
@@ -40,6 +47,8 @@ class GroceryAdapter (val context: Context,
             "Dairy" -> holder.image.setImageResource(R.drawable.dairy)
             "Frozen" -> holder.image.setImageResource(R.drawable.frozen)
         }
+
+        //If it is the first item of a certain type add the header
         if (grocery_list[i].start) {
             holder.headerTitle.text = grocery_list[i].type
             holder.headerTitle.textSize = 18F
@@ -47,6 +56,8 @@ class GroceryAdapter (val context: Context,
             holder.headerTitle.text = ""
             holder.headerTitle.textSize = 0F
         }
+
+        //If the item is checked add to the checked list
         holder.checkBox.setOnClickListener{
             Log.d("Checked", grocery_list[i].name)
             if (holder.checkBox.isChecked) {
