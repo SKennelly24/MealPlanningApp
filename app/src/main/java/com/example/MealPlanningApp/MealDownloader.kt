@@ -4,7 +4,7 @@ import android.os.AsyncTask
 import android.util.Log
 import java.lang.ref.WeakReference
 import java.net.URL
-import com.example.fuckeverything.MealsFragment
+import com.example.MealPlanningApp.MealsFragment
 import org.json.JSONObject
 import com.mashape.unirest.http.Unirest
 import org.json.JSONException

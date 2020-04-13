@@ -1,4 +1,4 @@
-package com.example.fuckeverything
+package com.example.MealPlanningApp
 
 import android.view.View
 import android.widget.ImageView

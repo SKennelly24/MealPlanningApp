@@ -1,4 +1,4 @@
-package com.example.fuckeverything
+package com.example.MealPlanningApp
 
 /**
 * Class to hold the variables associated with the grocery item

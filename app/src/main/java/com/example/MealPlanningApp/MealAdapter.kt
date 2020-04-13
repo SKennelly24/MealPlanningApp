@@ -4,8 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fuckeverything.MealViewHolder
-import com.example.fuckeverything.R
+import com.example.MealPlanningApp.MealViewHolder
+import com.example.MealPlanningApp.R
 import com.squareup.picasso.Picasso
 /**
  * Implements the adapter needed for the meal recycler view

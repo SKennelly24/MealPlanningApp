@@ -1,4 +1,4 @@
-package com.example.fuckeverything
+package com.example.MealPlanningApp
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

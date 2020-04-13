@@ -1,4 +1,4 @@
-package com.example.fuckeverything
+package com.example.MealPlanningApp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

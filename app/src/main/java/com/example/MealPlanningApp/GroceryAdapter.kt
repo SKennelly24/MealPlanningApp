@@ -5,9 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fuckeverything.GroceryItem
-import com.example.fuckeverything.GroceryViewHolder
-import com.example.fuckeverything.R
+import com.example.MealPlanningApp.GroceryItem
+import com.example.MealPlanningApp.GroceryViewHolder
+import com.example.MealPlanningApp.R
 
 /**
 * Adapter to use with the grocery list recycler view
