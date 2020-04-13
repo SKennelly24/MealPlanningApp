@@ -46,6 +46,7 @@ class GroceryAdapter (val context: Context,
             "Meat" -> holder.image.setImageResource(R.drawable.meat)
             "Dairy" -> holder.image.setImageResource(R.drawable.dairy)
             "Frozen" -> holder.image.setImageResource(R.drawable.frozen)
+            "Other" -> Log.d("Nothing", "at all")
         }
 
         //If it is the first item of a certain type add the header

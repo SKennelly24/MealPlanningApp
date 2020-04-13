@@ -10,6 +10,13 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
+    <string name="short_monday">M</string>
+    <string name="short_tuesday">Tu</string>
+    <string name="short_wednesday">W</string>
+    <string name="short_thursday">Th</string>
+    <string name="short_friday">F</string>
+    <string name="short_saturday">Sa</string>
+    <string name="short_sunday">Su</string>
     <string name="planner_title">Weekly Meal Planner</string>
     <string name="add_button_title">Add a Meal</string>
     <string name="clear_button_title">Clear Meals</string>
@@ -19,8 +26,9 @@
     <string name="grocery_add_button">Add an Item</string>
     <string name="grocery_clear_button">Clear List</string>
     <string name="grocery_buy_button">Buy Items</string>
-    <string name="meals_clear_button">Buy Items</string>
+    <string name="meals_clear_button">Clear Meals</string>
     <string name="grocery_item_header">Header</string>
     <string name="grocery_item_image_des">Image representing item type</string>
     <string name="meal_item_image_des">Image of the meal</string>
+    <string name="meal_name">Meal Name </string>
 </resources>

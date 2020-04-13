@@ -1,6 +1,7 @@
 package com.example.fuckeverything
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.JsonReader
 import android.util.JsonWriter
@@ -9,13 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ListView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import java.io.*
+
 
 /*
 * Planner fragment which shows the weekdays and the planned meals for each day
@@ -26,12 +25,12 @@ import java.io.*
 * - Press on a meal to delete it
  */
 class PlannerFragment : Fragment() {
-    private val days = arrayOf("Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun")
-    private var index: Int = -1
     private lateinit var mealListArrays: Array<MealList>
     private var newMeals: ArrayList<String> = arrayListOf()
     private lateinit var activityMain: MainActivity
     private lateinit var mealArrays: Array<ArrayList<String>>
+    private lateinit var dialogView : View
+    private var index = -1
 
     /*
     * Reads the plan from the JSON file and gets the activity
@@ -50,12 +49,19 @@ class PlannerFragment : Fragment() {
     * connects the list views to the lists of meals
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        dialogView = inflater.inflate(R.layout.add_meal_dialog, container, false)
         val view = inflater.inflate(R.layout.fragment_planner, container, false)
         val addButton: Button = view.findViewById(R.id.add_button)
         val clearButton : Button = view.findViewById(R.id.clear_button)
 
+
         addButton.setOnClickListener {
-            createMealDialog()
+            val orientation = activityMain.resources.configuration.orientation
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                createHorizontalMealDialog()
+            } else {
+                createVerticalMealDialog()
+            }
         }
         clearButton.setOnClickListener{
             clearMeals()
@@ -83,10 +89,25 @@ class PlannerFragment : Fragment() {
     *   - Title
     *   - Edit text box to write meal
      */
-    private fun createMealDialog() {
+    private fun createHorizontalMealDialog() {
+        val taskEditText : EditText = dialogView.findViewById(R.id.editText)
+        val builder = context?.let { AlertDialog.Builder(it) }
+        builder?.setTitle("Add a Meal?")
+        builder?.setView(dialogView)
+        builder?.setPositiveButton("OK"
+        ) { _, _ ->
+            val index = findWeekdayClicked()
+            val textString = taskEditText.text.toString()
+            updateList(index, textString)
+        }?.setNegativeButton("Cancel", null)?.create()
+        builder?.show()
+    }
+
+    private fun createVerticalMealDialog() {
+        val days = arrayOf("Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun")
         val taskEditText = EditText(context)
         val builder = context?.let { AlertDialog.Builder(it) }
-        builder?.setTitle("Add a Meal?")?.setSingleChoiceItems(days, -1
+        builder?.setTitle("Add an item?")?.setSingleChoiceItems(days, -1
         ) { _, i ->
             index = i
         }?.setPositiveButton("OK"
@@ -94,6 +115,20 @@ class PlannerFragment : Fragment() {
             val textString = taskEditText.text.toString()
             updateList(index, textString)
         }?.setNegativeButton("Cancel", null)?.setView(taskEditText)?.create()?.show()
+    }
+
+    private fun findWeekdayClicked() : Int{
+        var dayIndex = -1
+        val days = arrayOf("M", "Tu", "W", "Th", "F", "Sa", "Su")
+        val radioGroup : RadioGroup = dialogView.findViewById(R.id.radioButtons)
+        val selectedButton : RadioButton = dialogView.findViewById(radioGroup.checkedRadioButtonId)
+        for (i in days.indices) {
+            if (days[i] == selectedButton.text) {
+                dayIndex = i
+            }
+        }
+        return dayIndex
+
     }
 
     /*
@@ -204,21 +239,22 @@ class PlannerFragment : Fragment() {
      */
     private fun updateList(day_num :Int, meal_text: String) {
         Log.d("$day_num", meal_text)
-        mealListArrays[day_num].meals.add(meal_text)
-        newMeals.add(meal_text)
-        //Rejoins the adapter to the appropriate list view
-        val weekdayAdapter = context?.let {
-            ArrayAdapter<String>(
-                it,
-                R.layout.activity_listview, mealListArrays[day_num].meals
-            )
+        if (index != -1) {
+            mealListArrays[day_num].meals.add(meal_text)
+            newMeals.add(meal_text)
+            //Rejoins the adapter to the appropriate list view
+            val weekdayAdapter = context?.let {
+                ArrayAdapter<String>(
+                    it,
+                    R.layout.activity_listview, mealListArrays[day_num].meals
+                )
+            }
+            mealListArrays[day_num].listview_var.adapter = weekdayAdapter
+
+            //Animates the appropriate text view
+            val animation = AnimationUtils.loadAnimation(context, R.anim.sample_animation)
+            mealListArrays[day_num].text_var.startAnimation(animation)
         }
-        mealListArrays[day_num].listview_var.adapter = weekdayAdapter
-
-        //Animates the appropriate text view
-        val animation = AnimationUtils.loadAnimation(context, R.anim.sample_animation)
-        mealListArrays[day_num].text_var.startAnimation(animation)
-
     }
     /*
     * Finds the appropriate day string given the index
