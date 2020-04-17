@@ -11,7 +11,7 @@
         android:id="@+id/textView5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_meal_title"
+        android:text="@string/add_item_title"
         android:textSize="25sp"
         android:textColor="#000000"/>
 
@@ -21,47 +21,60 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/monButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/short_monday" />
 
         <RadioButton
-            android:id="@+id/tuesButton"
+            android:id="@+id/produceButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/short_tuesday" />
+            android:drawableLeft="@drawable/small_produce"
+            android:text="@string/grocery_type_0"
+            android:textSize="0sp"
+            android:drawableStart="@drawable/small_produce" />
+
 
         <RadioButton
-            android:id="@+id/wedButton"
+            android:id="@+id/cannedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/short_wednesday" />
+            android:drawableLeft="@drawable/small_can"
+            android:text="@string/grocery_type_1"
+            android:textSize="0sp"
+            android:drawableStart="@drawable/small_can" />
 
         <RadioButton
-            android:id="@+id/thursButton"
+            android:id="@+id/meatButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/short_thursday" />
+            android:drawableLeft="@drawable/small_meat"
+            android:text="@string/grocery_type_2"
+            android:textSize="0sp"
+            android:drawableStart="@drawable/small_meat" />
 
         <RadioButton
-            android:id="@+id/friButton"
+            android:id="@+id/dairyButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/short_friday" />
+            android:drawableLeft="@drawable/small_dairy"
+            android:text="@string/grocery_type_3"
+            android:textSize="0sp"
+            android:drawableStart="@drawable/small_dairy" />
 
         <RadioButton
-            android:id="@+id/satButton"
+            android:id="@+id/frozenButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/short_saturday" />
+            android:drawableLeft="@drawable/small_frozen"
+            android:text="@string/grocery_type_4"
+            android:textSize="0sp"
+            android:drawableStart="@drawable/small_frozen" />
 
         <RadioButton
-            android:id="@+id/sunButton"
+            android:id="@+id/otherButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/short_sunday" />
+            android:text="@string/grocery_type_5"
+            android:textSize="20sp"
+            />
 
     </RadioGroup>
 
@@ -69,7 +82,7 @@
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/meal_name"
+        android:hint="@string/item_name"
         android:inputType="text"/>
 
 </LinearLayout>

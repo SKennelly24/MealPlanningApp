@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Planificateur de repas</string>
+    <string name="nav_planner_title">Planificatrice</string>
+    <string name="nav_groceries_title">Les courses</string>
+    <string name="nav_meals_title">Repas</string>
+    <string name="monday">Lundi</string>
+    <string name="tuesday">Mardi</string>
+    <string name="wednesday">Mercredi</string>
+    <string name="thursday">Jeudi</string>
+    <string name="friday">Vendredi</string>
+    <string name="saturday">Samedi</string>
+    <string name="sunday">Dimanche</string>
+    <string name="short_monday">L</string>
+    <string name="short_tuesday">Ma</string>
+    <string name="short_wednesday">Me</string>
+    <string name="short_thursday">J</string>
+    <string name="short_friday">V</string>
+    <string name="short_saturday">S</string>
+    <string name="short_sunday">D</string>
+    <string name="planner_title">Planificateur de repas Hebdomadaire</string>
+    <string name="add_button_title">Ajouter un repas</string>
+    <string name="clear_button_title">Repas Clairs</string>
+    <string name="meal_title">Repas</string>
+    <string name="previous_meals">Repas Précédents</string>
+    <string name="suggested_meals">Repas Suggérés</string>
+    <string name="grocery_add_button">Ajouter un Élément</string>
+    <string name="grocery_clear_button">Effacer la Liste</string>
+    <string name="grocery_buy_button">Acheter des Articles</string>
+    <string name="meals_clear_button">Repas Clairs</string>
+    <string name="grocery_item_header">Entête</string>
+    <string name="grocery_item_image_des">Image représentant le type d\'élément</string>
+    <string name="meal_item_image_des">Image du repas</string>
+    <string name="meal_name">nom du repas</string>
+    <string name="grocery_type_0">Produire</string>
+    <string name="grocery_type_1">En Conserve</string>
+    <string name="grocery_type_2">Viande</string>
+    <string name="grocery_type_3">Laitier</string>
+    <string name="grocery_type_4">Congelé</string>
+    <string name="grocery_type_5">Autre</string>
+    <string name="item_name">Nom de l\'article</string>
+    <string name="add_item_title">Ajouter un Élément</string>
+    <string name="add_meal_title">Ajouter un repas</string>
+</resources>

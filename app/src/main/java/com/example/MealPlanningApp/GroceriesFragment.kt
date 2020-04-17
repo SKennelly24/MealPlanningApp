@@ -1,6 +1,7 @@
 package com.example.MealPlanningApp
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.JsonReader
 import android.util.JsonWriter
@@ -8,8 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homepagea.GroceryAdapter
 import java.io.*
+
 
 //Indexes for the varities of items
 const val PRODUCE_INDEX = 0
@@ -44,6 +45,8 @@ class GroceriesFragment : Fragment() {
     private lateinit var groceryPicker: RecyclerView
     private var groceryList: ArrayList<GroceryItem> = arrayListOf()
     private var ends = arrayOf(-1,-1,-1,-1,-1, -1)
+    private lateinit var itemDialogView : View
+    private lateinit var activityMain: MainActivity
 
     /**
     * Reads the grocery items from the JSON file
@@ -69,14 +72,17 @@ class GroceriesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        itemDialogView = inflater.inflate(R.layout.add_item_dialog, container, false)
         val view = inflater.inflate(R.layout.fragment_groceries, container, false)
         val addButton: Button = view.findViewById(R.id.add_button)
+        activityMain = activity as MainActivity
+
         //val clearButton : Button = view.findViewById(R.id.clear_button)
         val buyButton : Button = view.findViewById(R.id.buy_button)
         groceryPicker = view.findViewById(R.id.items_recycler)
 
         addButton.setOnClickListener {
-            createItemAddDialog()
+            createItemDialog()
         }
 
         buyButton.setOnClickListener {
@@ -91,6 +97,56 @@ class GroceriesFragment : Fragment() {
 
         initRecyclerView()
         return view
+    }
+    private fun createItemDialog() {
+        val orientation = activityMain.resources.configuration.orientation
+        val builder = context?.let { AlertDialog.Builder(it) }
+        if (itemDialogView.parent != null) {
+            (itemDialogView.parent as ViewGroup).removeView(itemDialogView)
+        }
+        builder?.setView(itemDialogView)
+        builder?.setPositiveButton("OK"
+        ) { _, _ ->
+            val taskEditText : EditText = itemDialogView.findViewById(R.id.editText)
+            val index = findWeekdayClicked()
+            val textString = taskEditText.text.toString()
+            addGroceryItem(textString, index)
+        }?.setNegativeButton("Cancel", null)?.create()
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            builder?.show()?.window?.setLayout(2000,700)
+        } else {
+            builder?.show()
+        }
+
+    }
+
+
+    private fun findWeekdayClicked() : Int{
+        var typeIndex = -1
+
+        val produceText : TextView = itemDialogView.findViewById(R.id.produceButton)
+        val cannedText: TextView = itemDialogView.findViewById(R.id.cannedButton)
+        val meatText: TextView = itemDialogView.findViewById(R.id.meatButton)
+        val dairyText: TextView = itemDialogView.findViewById(R.id.dairyButton)
+        val frozenText: TextView = itemDialogView.findViewById(R.id.frozenButton)
+        val otherText: TextView = itemDialogView.findViewById(R.id.otherButton)
+
+        val types = arrayOf(produceText.text.toString(), cannedText.text, meatText.text,
+            dairyText.text, frozenText.text, otherText.text)
+        for (type in types) {
+            Log.d("Type" , type.toString())
+        }
+
+        val radioGroup : RadioGroup = itemDialogView.findViewById(R.id.radioButtons)
+        val selectedButton : RadioButton = itemDialogView.findViewById(radioGroup.checkedRadioButtonId)
+        Log.d("Selected", selectedButton.text as String)
+        for (i in types.indices) {
+            if (types[i] == selectedButton.text) {
+                typeIndex = i
+            }
+        }
+        return typeIndex
+
     }
 
     /**
@@ -246,7 +302,7 @@ class GroceriesFragment : Fragment() {
         Log.d("Item", textString)
         Log.d("Start", start.toString())
         Log.d("Type", item_index.toString())
-        groceryList.add(currentIndex, GroceryItem(textString, itemTypes[index], start, false))
+        groceryList.add(currentIndex, GroceryItem(textString, itemTypes[item_index], start, false))
         groceryPicker.adapter?.notifyItemRangeChanged(currentIndex, groceryList.size - currentIndex)
         Log.d("all items", groceryList.toString())
     }

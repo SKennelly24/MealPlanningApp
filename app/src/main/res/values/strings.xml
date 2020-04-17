@@ -31,4 +31,13 @@
     <string name="grocery_item_image_des">Image representing item type</string>
     <string name="meal_item_image_des">Image of the meal</string>
     <string name="meal_name">Meal Name </string>
+    <string name="grocery_type_0">Produce</string>
+    <string name="grocery_type_1">Canned </string>
+    <string name="grocery_type_2">Meat</string>
+    <string name="grocery_type_3">Dairy</string>
+    <string name="grocery_type_4">Frozen</string>
+    <string name="grocery_type_5">Other</string>
+    <string name="item_name">Item Name</string>
+    <string name="add_item_title">Add an Item</string>
+    <string name="add_meal_title">Add a Meal</string>
 </resources>

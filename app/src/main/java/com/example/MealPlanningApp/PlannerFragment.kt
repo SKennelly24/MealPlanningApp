@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment
 import java.io.*
 
 
-/*
+/**
 * Planner fragment which shows the weekdays and the planned meals for each day
 * - Writes all the plan to a JSON file so there is data persistence
 * - Can add meals to a particular day, these are also added into a new meals array in the activity
@@ -31,6 +31,7 @@ class PlannerFragment : Fragment() {
     private lateinit var mealArrays: Array<ArrayList<String>>
     private lateinit var dialogView : View
     private var index = -1
+    private var days = arrayOf<String>()
 
     /*
     * Reads the plan from the JSON file and gets the activity
@@ -104,26 +105,41 @@ class PlannerFragment : Fragment() {
     }
 
     private fun createVerticalMealDialog() {
-        val days = arrayOf("Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun")
         val taskEditText = EditText(context)
         val builder = context?.let { AlertDialog.Builder(it) }
-        builder?.setTitle("Add an item?")?.setSingleChoiceItems(days, -1
-        ) { _, i ->
+        builder?.setTitle("Add an item?")
+        builder?.setSingleChoiceItems(days, -1) { _, i ->
             index = i
-        }?.setPositiveButton("OK"
+        }
+        builder?.setPositiveButton("OK"
         ) { _, _ ->
             val textString = taskEditText.text.toString()
             updateList(index, textString)
-        }?.setNegativeButton("Cancel", null)?.setView(taskEditText)?.create()?.show()
+        }
+        builder?.setNegativeButton("Cancel", null)?.setView(taskEditText)
+        builder?.create()?.show()
     }
+
+
 
     private fun findWeekdayClicked() : Int{
         var dayIndex = -1
-        val days = arrayOf("M", "Tu", "W", "Th", "F", "Sa", "Su")
+
+        val monText :TextView = dialogView.findViewById(R.id.monButton)
+        val tuesText:TextView = dialogView.findViewById(R.id.tuesButton)
+        val wedText:TextView = dialogView.findViewById(R.id.wedButton)
+        val thursText:TextView = dialogView.findViewById(R.id.thursButton)
+        val friText:TextView = dialogView.findViewById(R.id.friButton)
+        val satText:TextView = dialogView.findViewById(R.id.satButton)
+        val sunText:TextView = dialogView.findViewById(R.id.sunButton)
+
+        val shortDays = arrayOf(monText.text.toString(), tuesText.text, wedText.text,
+            thursText.text, friText.text, satText.text, sunText.text)
+
         val radioGroup : RadioGroup = dialogView.findViewById(R.id.radioButtons)
         val selectedButton : RadioButton = dialogView.findViewById(radioGroup.checkedRadioButtonId)
-        for (i in days.indices) {
-            if (days[i] == selectedButton.text) {
+        for (i in shortDays.indices) {
+            if (shortDays[i] == selectedButton.text) {
                 dayIndex = i
             }
         }
@@ -160,14 +176,26 @@ class PlannerFragment : Fragment() {
         val saturdayListViewVar: ListView = view.findViewById(R.id.saturday_listview)
         val sundayListViewVar: ListView = view.findViewById(R.id.sunday_listview)
 
+        val mondayText : TextView = view.findViewById(R.id.monday_text)
+        val tuesdayText : TextView = view.findViewById(R.id.tuesday_text)
+        val wednesdayText : TextView = view.findViewById(R.id.wednesday_text)
+        val thursdayText : TextView = view.findViewById(R.id.thursday_text)
+        val fridayText : TextView = view.findViewById(R.id.friday_text)
+        val saturdayText : TextView = view.findViewById(R.id.saturday_text)
+        val sundayText : TextView = view.findViewById(R.id.sunday_text)
+
+        days = arrayOf(mondayText.text.toString(), tuesdayText.text.toString(),
+            wednesdayText.text.toString(), thursdayText.text.toString(), fridayText.text.toString(),
+            saturdayText.text.toString(), sundayText.text.toString())
+
         mealListArrays = arrayOf(
-            MealList(mealArrays[0], mondayListViewVar, view.findViewById(R.id.monday_text)),
-            MealList(mealArrays[1], tuesdayListViewVar, view.findViewById(R.id.tuesday_text)),
-            MealList(mealArrays[2], wednesdayListViewVar, view.findViewById(R.id.wednesday_text)),
-            MealList(mealArrays[3], thursdayListViewVar, view.findViewById(R.id.thursday_text)),
-            MealList(mealArrays[4], fridayListViewVar, view.findViewById(R.id.friday_text)),
-            MealList(mealArrays[5], saturdayListViewVar, view.findViewById(R.id.saturday_text)),
-            MealList(mealArrays[6], sundayListViewVar, view.findViewById(R.id.sunday_text))
+            MealList(mealArrays[0], mondayListViewVar, mondayText),
+            MealList(mealArrays[1], tuesdayListViewVar, tuesdayText),
+            MealList(mealArrays[2], wednesdayListViewVar, wednesdayText),
+            MealList(mealArrays[3], thursdayListViewVar, thursdayText),
+            MealList(mealArrays[4], fridayListViewVar, fridayText),
+            MealList(mealArrays[5], saturdayListViewVar, saturdayText),
+            MealList(mealArrays[6], sundayListViewVar, sundayText)
         )
     }
 
