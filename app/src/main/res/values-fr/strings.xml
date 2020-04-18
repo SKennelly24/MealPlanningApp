@@ -41,4 +41,9 @@
     <string name="item_name">Nom de l\'article</string>
     <string name="add_item_title">Ajouter un Élément</string>
     <string name="add_meal_title">Ajouter un repas</string>
+    <string name="one">Un</string>
+    <string name="two">Deux</string>
+    <string name="three">Trois</string>
+    <string name="amount">Montant</string>
+    <string name="type">Type</string>
 </resources>

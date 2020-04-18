@@ -14,4 +14,5 @@ class GroceryViewHolder (view : View) : RecyclerView.ViewHolder(view){
     val image: ImageView = view.findViewById(R.id.type_image)
     val headerTitle: TextView = view.findViewById(R.id.header)
     val checkBox : CheckBox = view.findViewById(R.id.checkBox)
+    val amount_text : TextView = view.findViewById(R.id.amount)
 }

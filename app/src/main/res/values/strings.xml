@@ -40,4 +40,9 @@
     <string name="item_name">Item Name</string>
     <string name="add_item_title">Add an Item</string>
     <string name="add_meal_title">Add a Meal</string>
+    <string name="one">One</string>
+    <string name="two">Two</string>
+    <string name="three">Three</string>
+    <string name="amount">Amount</string>
+    <string name="type">Type</string>
 </resources>

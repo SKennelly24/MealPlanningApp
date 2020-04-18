@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homepagea.Meal
 import com.example.homepagea.MealAdapter
-import com.example.homepagea.MealDownloader
 import java.io.*
 /**
  * Meal fragment which shows the previous meals and the suggested meals

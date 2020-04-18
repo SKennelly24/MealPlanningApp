@@ -15,85 +15,121 @@
         android:textSize="25sp"
         android:textColor="#000000"/>
 
-    <RadioGroup
-        android:id="@+id/radioButtons"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-
-        <RadioButton
-            android:id="@+id/produceButton"
+        <TextView
+            android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/small_produce"
-            android:drawableRight="@drawable/small_produce"
-            android:text="@string/grocery_type_0"
-            android:textSize="20sp"
-            android:scaleX="0.7"
-            android:scaleY="0.7"/>
+            android:text="@string/type"
+            android:textSize="18sp" />
 
-
-        <RadioButton
-            android:id="@+id/cannedButton"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/radioButtons"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/grocery_type_1"
-            android:drawableRight="@drawable/small_can"
-            android:drawableEnd="@drawable/small_can"
-            android:textSize="20sp"
-            android:scaleX="0.7"
-            android:scaleY="0.7"/>
+            android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/meatButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/grocery_type_2"
-            android:drawableRight="@drawable/small_meat"
-            android:drawableEnd="@drawable/small_meat"
-            android:textSize="20sp"
-            android:scaleX="0.7"
-            android:scaleY="0.7"/>
 
-        <RadioButton
-            android:id="@+id/dairyButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/grocery_type_3"
-            android:drawableRight="@drawable/small_dairy"
-            android:drawableEnd="@drawable/small_dairy"
-            android:textSize="20sp"
-            android:scaleX="0.7"
-            android:scaleY="0.7"/>
+            <RadioButton
+                android:id="@+id/produceButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/grocery_type_0" />
 
-        <RadioButton
-            android:id="@+id/frozenButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/grocery_type_4"
-            android:drawableRight="@drawable/small_frozen"
-            android:drawableEnd="@drawable/small_frozen"
-            android:textSize="20sp"
-            android:scaleX="0.7"
-            android:scaleY="0.7"/>
 
-        <RadioButton
-            android:id="@+id/otherButton"
-            android:layout_width="158dp"
-            android:layout_height="wrap_content"
-            android:scaleX="0.7"
-            android:scaleY="0.7"
-            android:text="@string/grocery_type_5"
-            android:textSize="20sp" />
+            <RadioButton
+                android:id="@+id/cannedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/grocery_type_1" />
 
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/meatButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/grocery_type_2" />
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
+            <RadioButton
+                android:id="@+id/dairyButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/grocery_type_3" />
+
+            <RadioButton
+                android:id="@+id/frozenButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/grocery_type_4" />
+
+            <RadioButton
+                android:id="@+id/otherButton"
+                android:layout_width="158dp"
+                android:layout_height="wrap_content"
+                android:text="@string/grocery_type_5" />
+
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/item_name"
-        android:inputType="text"/>
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/item_name"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/item_name"
+            android:inputType="text" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/amount"
+            android:textSize="18sp" />
+
+        <RadioGroup
+            android:id="@+id/amountRadioButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/oneButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/one" />
+
+
+            <RadioButton
+                android:id="@+id/twoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/two" />
+
+            <RadioButton
+                android:id="@+id/threeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/three" />
+
+        </RadioGroup>
+    </LinearLayout>
 
 </LinearLayout>

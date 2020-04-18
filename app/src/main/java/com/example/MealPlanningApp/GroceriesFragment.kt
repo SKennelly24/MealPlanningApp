@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.JsonReader
+import android.util.JsonToken
 import android.util.JsonWriter
 import android.util.Log
 import android.view.LayoutInflater
@@ -40,7 +41,6 @@ const val OTHER_INDEX = 5
  */
 class GroceriesFragment : Fragment() {
     private val itemTypes = arrayOf("Produce", "Canned", "Meat", "Dairy", "Frozen", "Other")
-    private var index  = -1
     private lateinit var adapter : GroceryAdapter
     private lateinit var groceryPicker: RecyclerView
     private var groceryList: ArrayList<GroceryItem> = arrayListOf()
@@ -108,9 +108,10 @@ class GroceriesFragment : Fragment() {
         builder?.setPositiveButton("OK"
         ) { _, _ ->
             val taskEditText : EditText = itemDialogView.findViewById(R.id.editText)
-            val index = findWeekdayClicked()
+            val type_index = findWeekdayClicked()
             val textString = taskEditText.text.toString()
-            addGroceryItem(textString, index)
+            val amount_index = findAmountClicked()
+            addGroceryItem(textString, type_index, amount_index)
         }?.setNegativeButton("Cancel", null)?.create()
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             builder?.show()?.window?.setLayout(2000,700)
@@ -118,6 +119,26 @@ class GroceriesFragment : Fragment() {
             builder?.show()
         }
 
+    }
+
+    private fun findAmountClicked() :Int {
+        var amount = 1
+
+        val oneText : TextView = itemDialogView.findViewById(R.id.oneButton)
+        val twoText: TextView = itemDialogView.findViewById(R.id.twoButton)
+        val threeText: TextView = itemDialogView.findViewById(R.id.threeButton)
+
+        val amounts = arrayOf(oneText.text.toString(), twoText.text, threeText.text)
+
+        val radioGroup : RadioGroup = itemDialogView.findViewById(R.id.amountRadioButtons)
+        val selectedButton : RadioButton = itemDialogView.findViewById(radioGroup.checkedRadioButtonId)
+        Log.d("Selected", selectedButton.text as String)
+        for (i in amounts.indices) {
+            if (amounts[i] == selectedButton.text) {
+                amount = i+1
+            }
+        }
+        return amount
     }
 
 
@@ -231,7 +252,7 @@ class GroceriesFragment : Fragment() {
     /**
     * Removes the grocery item from the list and updates it
      */
-    private fun removeGroceryItem(item: GroceryItem) {
+    /*private fun removeGroceryItem(item: GroceryItem) {
         Log.d("Delete", item.name)
         groceryList.remove(item)
 
@@ -250,23 +271,23 @@ class GroceriesFragment : Fragment() {
             ends[productIndex] = x + 1
         }
         groceryPicker.adapter?.notifyDataSetChanged()
-    }
+    }*/
 
     /**
     * Creates a dialog to delete an item
      */
-    private fun createDeleteDialog(item: GroceryItem) {
+    /*private fun createDeleteDialog(item: GroceryItem) {
         val builder = context?.let { AlertDialog.Builder(it) }
         builder?.setTitle("Delete Item?")?.setPositiveButton("OK"
         ) { _, _ ->
             removeGroceryItem(item)
         }?.setNegativeButton("Cancel", null)?.create()?.show()
 
-    }
+    }*/
     /**
     * Creates a dialog to add an item to the list
      */
-    private fun createItemAddDialog() {
+    /*private fun createItemAddDialog() {
         val taskEditText = EditText(context)
         val builder = context?.let { AlertDialog.Builder(it) }
         builder?.setTitle("Add an item?")?.setSingleChoiceItems(itemTypes, -1
@@ -277,10 +298,10 @@ class GroceriesFragment : Fragment() {
             val textString = taskEditText.text.toString()
             addGroceryItem(textString, index)
         }?.setNegativeButton("Cancel", null)?.setView(taskEditText)?.create()?.show()
-    }
+    }*/
 
 
-    private fun addGroceryItem(textString : String, item_index: Int) {
+    private fun addGroceryItem(textString : String, item_index: Int, amount: Int) {
         var currentIndex = groceryList.size
         var start = false
         for (x in ends.indices) {
@@ -302,8 +323,19 @@ class GroceriesFragment : Fragment() {
         Log.d("Item", textString)
         Log.d("Start", start.toString())
         Log.d("Type", item_index.toString())
-        groceryList.add(currentIndex, GroceryItem(textString, itemTypes[item_index], start, false))
-        groceryPicker.adapter?.notifyItemRangeChanged(currentIndex, groceryList.size - currentIndex)
+        Log.d("Amount", amount.toString())
+        var item_in_list = false
+        for (i in groceryList.indices) {
+            if (groceryList[i].name == textString) {
+                groceryList[i].amount += amount
+                groceryPicker.adapter?.notifyItemChanged(i)
+                item_in_list = true
+            }
+        }
+        if (!item_in_list) {
+            groceryList.add(currentIndex, GroceryItem(textString, itemTypes[item_index], start, false, amount))
+            groceryPicker.adapter?.notifyItemRangeChanged(currentIndex, groceryList.size - currentIndex)
+        }
         Log.d("all items", groceryList.toString())
     }
 
@@ -327,6 +359,8 @@ class GroceriesFragment : Fragment() {
             writer.value(item.type)
             Log.d("start", item.start.toString())
             writer.value(item.start)
+            Log.d("Amount", item.amount.toString())
+            writer.value(item.amount)
             writer.endArray()
         }
         Log.d("Writer", "Finished Writing")
@@ -354,7 +388,12 @@ class GroceriesFragment : Fragment() {
                 val grocery = reader.nextString()
                 val type = reader.nextString()
                 val start = reader.nextBoolean()
-                groceryList.add(GroceryItem(grocery, type, start, false))
+                var amount = 1
+                if (reader.peek() != JsonToken.END_ARRAY) {
+                    amount = reader.nextInt()
+                }
+
+                groceryList.add(GroceryItem(grocery, type, start, false, amount))
                 ends[findProductIndex(type)] = count
                 Log.d("grocery", grocery)
                 Log.d("type", type)

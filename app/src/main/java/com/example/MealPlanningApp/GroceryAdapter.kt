@@ -38,6 +38,7 @@ class GroceryAdapter (val context: Context,
     override fun onBindViewHolder(holder: GroceryViewHolder, i: Int) {
         Log.d("Bind", "${grocery_list[i].start}")
         holder.text.text = grocery_list[i].name
+        holder.amount_text.text = grocery_list[i].amount.toString()
 
         //Add the appropriate image
         when(grocery_list[i].type) {
@@ -70,6 +71,8 @@ class GroceryAdapter (val context: Context,
             }
         }
         holder.checkBox.isChecked = grocery_list[i].checked
+
+
     }
 
 }

@@ -1,15 +1,15 @@
-package com.example.homepagea
+package com.example.MealPlanningApp
 
 import android.os.AsyncTask
 import android.util.Log
 import java.lang.ref.WeakReference
 import java.net.URL
-import com.example.MealPlanningApp.MealsFragment
+import com.example.homepagea.Meal
 import org.json.JSONObject
 import com.mashape.unirest.http.Unirest
 import org.json.JSONException
 
-const val URL = "https://tasty.p.rapidapi.com/recipes/list?tags=dinner&from=0&sizes=19"
+const val URL = "https://tasty.p.rapidapi.com/recipes/list?tags=dinner&from=0&sizes=100"
 const val HOST = "tasty.p.rapidapi.com"
 const val KEY = "8db5bf4bc1msh54ce001970e013dp1be510jsn1b009a6048a3"
 
