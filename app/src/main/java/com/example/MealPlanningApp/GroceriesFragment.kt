@@ -302,9 +302,10 @@ class GroceriesFragment : Fragment() {
 
 
     private fun addGroceryItem(textString : String, item_index: Int, amount: Int) {
+        Log.d("all items", groceryList.toString())
         var currentIndex = groceryList.size
         var start = false
-        for (x in ends.indices) {
+        /*for (x in ends.indices) {
             if (x == item_index) {
                 if (ends[x] == -1) {
                     ends[x] = groceryList.size + 1
@@ -318,7 +319,22 @@ class GroceriesFragment : Fragment() {
                 ends[x] += 1
             }
             Log.d("$x", ends[x].toString())
+        }*/
+        if (ends[item_index] == -1) {
+            ends[item_index] = groceryList.size + 1
+            start = true
+        } else {
+            currentIndex = ends[item_index]
+            ends[item_index] = ends[item_index] + 1
         }
+        for (x in ends.indices) {
+            if (currentIndex < (ends[x]) && x != item_index) {
+                ends[x] += 1
+            }
+            Log.d("$x", ends[x].toString())
+        }
+
+
         Log.d("Index", currentIndex.toString())
         Log.d("Item", textString)
         Log.d("Start", start.toString())
@@ -326,7 +342,7 @@ class GroceriesFragment : Fragment() {
         Log.d("Amount", amount.toString())
         var item_in_list = false
         for (i in groceryList.indices) {
-            if (groceryList[i].name == textString) {
+            if (groceryList[i].name == textString && groceryList[i].type == itemTypes[item_index]) {
                 groceryList[i].amount += amount
                 groceryPicker.adapter?.notifyItemChanged(i)
                 item_in_list = true
@@ -398,6 +414,7 @@ class GroceriesFragment : Fragment() {
                 Log.d("grocery", grocery)
                 Log.d("type", type)
                 Log.d("start", start.toString())
+                Log.d("amount", amount.toString())
 
                 reader.endArray()
             }

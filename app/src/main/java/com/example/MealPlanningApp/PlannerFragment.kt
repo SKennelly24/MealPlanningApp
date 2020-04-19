@@ -93,7 +93,6 @@ class PlannerFragment : Fragment() {
     private fun createHorizontalMealDialog() {
         val taskEditText : EditText = dialogView.findViewById(R.id.editText)
         val builder = context?.let { AlertDialog.Builder(it) }
-        builder?.setTitle("Add a Meal?")
         builder?.setView(dialogView)
         builder?.setPositiveButton("OK"
         ) { _, _ ->
@@ -107,7 +106,7 @@ class PlannerFragment : Fragment() {
     private fun createVerticalMealDialog() {
         val taskEditText = EditText(context)
         val builder = context?.let { AlertDialog.Builder(it) }
-        builder?.setTitle("Add an item?")
+        builder?.setTitle("Add a Meal?")
         builder?.setSingleChoiceItems(days, -1) { _, i ->
             index = i
         }

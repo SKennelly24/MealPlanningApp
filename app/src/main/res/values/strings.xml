@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Meal Planner</string>
+    <string name="app_name">MealPlanner</string>
     <string name="nav_planner_title">Planner</string>
     <string name="nav_groceries_title">Groceries</string>
     <string name="nav_meals_title">Meals</string>
